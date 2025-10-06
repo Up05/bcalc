@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <meta charset="UTF-8">
+    <title> Loginė matematika </title>
+    
+    <style>
+
+        .multi-overline-bg {
+            background-image:
+                linear-gradient(currentColor, currentColor),
+                linear-gradient(currentColor, currentColor);
+            background-repeat: no-repeat;
+            background-size: 100% 1px, 100% 1px;
+            background-position: 0 0, 0 4px;
+        }
+
+        :root {
+            background: #282828FF;
+        }
+        
+        * {
+            font-family: Cambria;
+            font-weight: 500;
+            font-style: normal;
+            text-shadow: -1px -1px 2px #1D2021FF;
+            color: #EBDBB2FF;
+        }
+
+        #main {
+            margin: 0;
+            font-size: 16pt;
+            width: 80%;
+            height: 2rem;
+            margin-bottom: 8px;
+            padding: 0;
+            padding-left: 4px;
+            text-align: start;
+        }
+
+        #keypad {
+            display: grid;
+            grid-template-columns: repeat(4, min-content);
+        }
+    
+        #keypad button {
+            font-size: 16pt;
+            width : 3.5rem;
+            height: 3rem;
+            margin-left: 4px;
+            margin-bottom: 5px;
+            padding: 0;
+        }
+
+        #the_symbol {
+            filter: brightness(120%);
+        }
+    
+        button, p {
+            background: #3C3836FF;
+        }
+        button:active {
+            filter: brightness(90%);
+            border-top:    2px solid #1D2021FF;
+            border-left:   2px solid #1D2021FF;
+            border-bottom: 2px solid #504945FF;
+            border-right:  2px solid #504945FF;
+        }
+        p:active {
+            filter: brightness(80%);
+        }
+
+        button:hover {
+            filter: brightness(110%);
+        }
+
+        button { 
+            border-top:    2px solid #504945FF;
+            border-left:   2px solid #504945FF;
+            border-bottom: 2px solid #1D2021FF;
+            border-right:  2px solid #1D2021FF;
+        }
+        p { 
+            border-top:    2px solid #1D2021FF;
+            border-left:   2px solid #1D2021FF;
+            border-bottom: 2px solid #504945FF;
+            border-right:  2px solid #504945FF;
+        }
+
+
+    </style>
+
+</head>
+<body>
+
+    <p id=main></p>
+
+    <div id=keypad>
+        <button>▲</button>
+        <button>◀</button>
+        <button>▶</button>
+        <button>▼</button>
+        <button>x</button>
+        <button>y</button>
+        <button>z</button>
+        <button style="font-size: 28pt; line-height: 1rem">⌫</button>
+        <button>0</button>
+        <button>1</button>
+        <button>(</button>
+        <button>)</button>
+        <button>‾</button>
+        <button>&amp;</button>
+        <button>∨</button>
+        <button>⊕</button>
+        <button>⇒</button>
+        <button>⇔</button>
+        <button>|</button>
+        <button>↓</button>
+    </div>
+
+    <script src=renderer.js></script>
+    <script src=interpreter.js></script>
+    <script src=main.js defer></script>
+
+
+</body>
+</html>
+

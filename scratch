@@ -1,0 +1,72 @@
+
+
+
+
+
+
+
+
+
+/*
+ *soft SPECS:
+ *  When inserting '[' the calculator should enter into
+ *  a separate mode with an indicator (maybe green light)
+ *  here you shouldn't be able to do anything but enter ']' (maybe on next press of '['?)
+ *
+ *  when '[' is deleted, find matching ']' and delete it
+ *  when ']' is deleted, find matching '[' and delete it
+ *  when cursor is on '[' or ']' highlight the line above
+ *
+ *  when ']' is before '[', swap em
+ *
+ *  when ']' goes outside of parentheses don't let it go further
+ *  if cursor is on an operator automatically select the vars around it
+ *
+ *  function that draws the standard expression
+ *  function that parses the std. expression
+ *
+ *
+*/
+
+/*
+function expr_text() {
+    return by_id("main").innerText
+}
+
+function expr_len() {
+    return by_id("main").innerText.length
+}
+
+function handle_keypad(button) {
+         if(button == "▲") expr_cursor = 0
+    else if(button == "◀") expr_cursor -= expr_cursor > 0 ? 1 : 0
+    else if(button == "▶") expr_cursor += expr_len() > expr_cursor ? 1 : 0
+    else if(button == "▼") expr_cursor = expr_len()
+    else if(button == "⌫") {
+        if(by_id("main").children.length > 0) {
+            by_id("main").removeChild(
+                by_id("main").children.item(expr_cursor - 1))
+            expr_cursor -= 1
+        }
+    } else {
+        let span = document.createElement("span")
+        span.innerText = button
+
+        if(by_id("main").children.length > 0) {
+            by_id("main").insertBefore(span, by_id("main").children.item(expr_cursor))
+        } else {
+            by_id("main").appendChild(span)
+        }
+
+        expr_cursor += 1
+    }
+    
+    for(let i = 0; i < by_id("main").children.length; i ++) {
+        console.log(i + 1, expr_cursor)
+        by_id("main").children.item(i).id = 
+            i + 1 == expr_cursor ? "the_symbol" : ""
+    } 
+}
+*/
+
+
