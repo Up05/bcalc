@@ -57,6 +57,29 @@
             filter: brightness(120%);
         }
     
+        canvas {
+            width: min-content;
+            height: min-content;
+        }
+
+        table {
+            border: none;
+            padding: 0;
+            border-spacing: 0;
+        }
+        td, th, tr {
+            padding: 0;
+            padding-inline: 2px;
+            margin: 0;
+            border: none;
+            border-right: 1px solid yellow;
+            border-left: 1px solid yellow;
+            text-align: center;
+        }
+        th {
+            border-bottom: 1px solid yellow;
+        }
+
         button, p {
             background: #3C3836FF;
         }
@@ -91,10 +114,15 @@
 
     </style>
 
+    <script src=renderer.js></script>
+    <script src=interpreter.js></script>
 </head>
 <body>
 
-    <p id=main></p>
+    <script>
+        let main_canvas = render_expression("", { x: 600, y: 50 }, 24)
+        document.body.appendChild(main_canvas)
+    </script>
 
     <div id=keypad>
         <button>▲</button>
@@ -119,8 +147,6 @@
         <button>↓</button>
     </div>
 
-    <script src=renderer.js></script>
-    <script src=interpreter.js></script>
     <script src=main.js defer></script>
 
 

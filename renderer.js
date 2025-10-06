@@ -1,12 +1,12 @@
 function lookup_token_char(token) {
     const token_char_map = {
-    '&': '∧', // AND
-    'v': '∨', // OR
-    'o': '⊕', // XOR
-    '>': '⇒', // IMPLY
-    '=': '⇔', // EQUAL
-    '^': '|', // NAND
-    '|': '↓', // NOR
+        '&': '&', // AND
+        'v': '∨', // OR
+        'o': '⊕', // XOR
+        '>': '⇒', // IMPLY
+        '=': '⇔', // EQUAL
+        '^': '|', // NAND
+        '|': '↓', // NOR
     };
 
     return token_char_map[token] || token;
@@ -28,16 +28,19 @@ function find_overline_regions(expr) {
     return regions;
 }
 
-function render_expression_to_canvas(expression, canvas_size) {
-    const canvas = document.createElement('canvas');
-    canvas.width  = canvas_size.x
-    canvas.height = canvas_size.y
+function render_expression(expression, canvas_size, font_size, canvas) {
+    expression = expression.replaceAll(" ", "")
+    if(!canvas) {
+        canvas = document.createElement('canvas');
+        canvas.width  = canvas_size.x
+        canvas.height = canvas_size.y
+    }
 
     const ctx = canvas.getContext('2d');
 
-    const font_size = 24;
-    const y = 16;
-    const spacing = 8;
+    font_size = font_size || 24;
+    const y = canvas_size.y - font_size - (font_size < 24 ? 3 : 10);
+    const spacing = 2;
     ctx.font = `${font_size}pt monospace`;
     ctx.textBaseline = 'top';
     ctx.fillStyle = 'white';
@@ -49,22 +52,42 @@ function render_expression_to_canvas(expression, canvas_size) {
 
     const char_positions = [];
     let x = 4;
-    for (let i = 0; i < expression.length; i++) {
+    if(typeof expr_cursor === 'undefined' || !expr_cursor) {
+        ctx.fillStyle = 'white'
+        ctx.fillRect(x, y+2, 2, -ctx.measureText("I").alphabeticBaseline);
+    }
+
+    for(let i = 0; i < expression.length; i++) {
         const ch = expression[i];
-        if (ch === '[' || ch === ']') {
+        if(ch === '[' || ch === ']') {
             char_positions.push(x);
             continue;
         }
 
         const display_ch = lookup_token_char(ch);
+        const text_size = ctx.measureText(display_ch)
         ctx.fillStyle = 'white';
         ctx.fillText(display_ch, x, y);
         char_positions.push(x);
-        x += ctx.measureText(display_ch).width + spacing;
+
+        if(i == expr_cursor - 1) {
+            ctx.fillStyle = '#ffffff22'
+            ctx.fillRect(x, y+2, text_size.width, -text_size.alphabeticBaseline);
+        }
+        console.log(negation_mode, i, negation_begin)
+        if( negation_mode && 
+            i-1 >= Math.min(negation_begin, expr_cursor-1) && 
+            i   <= Math.max(negation_begin, expr_cursor-1)
+        ) {
+            ctx.fillStyle = '#00ff0033'
+            ctx.fillRect(x, y+2, text_size.width, -text_size.alphabeticBaseline);
+        }
+
+        x += text_size.width + spacing;
     }
 
     ctx.strokeStyle = 'white';
-    ctx.lineWidth = 2;
+    ctx.lineWidth = font_size < 24 ? 1 : 2;
     for (const [start, end] of regions) {
         let left = start + 1;
         while (left < expression.length && expression[left] === '[') left++;
@@ -83,7 +106,7 @@ function render_expression_to_canvas(expression, canvas_size) {
         const display_right = lookup_token_char(expression[right]);
         const x2 = (char_positions[right] ?? x1) + ctx.measureText(display_right).width;
 
-        const overline_y = y + 2 - (5 * (max_level - 1)); 
+        const overline_y = y - 2 - (5 * (max_level - 1)); 
         ctx.beginPath();
         ctx.moveTo(x1, overline_y);
         ctx.lineTo(x2, overline_y);
@@ -93,4 +116,12 @@ function render_expression_to_canvas(expression, canvas_size) {
     return canvas;
 }
 
+function cell_size_heuristic(text) {
+    let count = 0
+    for(let r of text) {
+        if(is_any(r, ' ', '[', ']')) continue;
+        count ++ 
+    }
+    return count * 12
+}
 
