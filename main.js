@@ -11,8 +11,6 @@ for(let child of by_id("keypad").children) {
 let expr_cursor = 0
 let expr = ""
 
-let html_table = make_table(expr)
-
 let negation_mode = false
 let negation_begin = -1
 
@@ -48,11 +46,10 @@ function handle_keypad(key) {
                 expr = expr.slice(0, expr_cursor) + '[' + expr.slice(expr_cursor)
                 expr_cursor ++
             } else {
-                console.log("expr 1 ", expr)
                 expr = expr.slice(0, negation_begin) + '[' + expr.slice(negation_begin)
                 if(expr_cursor == expr.length) expr_cursor ++ 
                 expr = expr.slice(0, expr_cursor+1) + ']' + expr.slice(expr_cursor+1)
-                console.log("expr 3 ", expr)
+                expr_cursor ++
             }
             negation_begin = -1
         }
@@ -102,16 +99,31 @@ function handle_keypad(key) {
 
     render_expression(expr, { x: 600, y: 50 }, 24, main_canvas, true)
 
-    if(html_table != null) {
-        try {
-            document.body.removeChild(html_table)
-        } catch(e) {}
+    { // !!! PLEASE DON'T FUCKING CLEAR the_table RIGHT AFTER THIS!!! PLEASEEEEEE
+        let html_table = make_table(expr)
+        try { by_id("table").replaceChildren() } catch(e) {}
+
+        if(html_table != null) {
+            by_id("table").appendChild(html_table)
+        }
     }
 
-    html_table = make_table(expr)
+    {
+        try { by_id("dual").replaceChildren() } catch(e) {}
 
-    if(html_table != null) {
-        document.body.appendChild(html_table)
+        let html_table = make_table(make_dual_func(expr))
+        if(html_table != null) {
+            by_id("dual").appendChild(html_table)
+        }
+    }
+
+    {
+        try { by_id("mono").replaceChildren() } catch(e) {}
+
+        let diagram = render_monotone_func(the_table)
+        if(diagram != null) {
+            by_id("mono").appendChild(diagram)
+        }
     }
 }
 

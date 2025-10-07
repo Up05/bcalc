@@ -213,7 +213,7 @@ function make_table(text) {
             else       td = document.createElement('td');
 
             if (i == 0) {
-                const canvas = render_expression(cell, { x: cell_size_heuristic(cell), y: 24 }, 12, null, false);
+                const canvas = render_expression(cell, { x: cell_size_heuristic(cell), y: 36 }, 12, null, false);
                 td.appendChild(canvas);
             } else { td.textContent = cell; }
 
@@ -224,5 +224,16 @@ function make_table(text) {
     }
 
     return table;
+}
+
+
+
+function make_dual_func(expr_ref) {
+    expr_ref = expr_ref.replaceAll('x', "[x]")
+    expr_ref = expr_ref.replaceAll('y', "[y]")
+    expr_ref = expr_ref.replaceAll('z', "[z]")
+    expr_ref = expr_ref.replaceAll('w', "[w]")
+    expr_ref = '[' + expr_ref + ']'
+    return expr_ref
 }
 
