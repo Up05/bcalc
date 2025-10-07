@@ -208,8 +208,6 @@ function make_table(text) {
         }
     }
 
-    console.table(the_table)
-
     const table = document.createElement('table');
     table.border = "1"; // simple border for clarity
 

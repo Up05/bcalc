@@ -50,6 +50,7 @@ function render_expression(expression, canvas_size, font_size, canvas) {
 
     const regions = find_overline_regions(expression);
 
+    let the_overline = 0
     const char_positions = [];
     let x = 4;
     if(typeof expr_cursor === 'undefined' || !expr_cursor) {
@@ -74,7 +75,6 @@ function render_expression(expression, canvas_size, font_size, canvas) {
             ctx.fillStyle = '#ffffff22'
             ctx.fillRect(x, y+2, text_size.width, -text_size.alphabeticBaseline);
         }
-        console.log(negation_mode, i, negation_begin)
         if( negation_mode && 
             i-1 >= Math.min(negation_begin, expr_cursor-1) && 
             i   <= Math.max(negation_begin, expr_cursor-1)
@@ -106,11 +106,19 @@ function render_expression(expression, canvas_size, font_size, canvas) {
         const display_right = lookup_token_char(expression[right]);
         const x2 = (char_positions[right] ?? x1) + ctx.measureText(display_right).width;
 
+        console.log(expr_cursor, left, right)
+        if(left == expr_cursor || right == expr_cursor - 2) {
+            ctx.strokeStyle = "orange"
+        } else {
+            ctx.strokeStyle = "white"
+        }
+
         const overline_y = y - 2 - (5 * (max_level - 1)); 
         ctx.beginPath();
         ctx.moveTo(x1, overline_y);
         ctx.lineTo(x2, overline_y);
         ctx.stroke();
+
     }
 
     return canvas;
