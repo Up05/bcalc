@@ -101,16 +101,9 @@ function print_inline(node) {
     if(node.val == '[')  the_cell += "] "
 }
 
-
-// print_heading is bogus, should have default value? I guess undefined == false???
-// it does not do the headigns
-// it is missing the first part? where the fuck?
-// I don't know where the actual printing functions are...
-// print_ast unnecesary
-// TODO print_inline!!!
-// 
 function interpret(node, vars, print_heading) {
     let out
+    if(node == null) return null
     switch(node.val) {
         case '[': out = !interpret(node.lhs, vars, print_heading); break
         case '&': out =  and(interpret(node.lhs, vars, print_heading), interpret(node.rhs, vars, print_heading)); break
@@ -187,7 +180,6 @@ function make_table(text) {
     the_table.push(the_row)
     the_row = [ ]
 
-    // print truth table (4 vars)
     for (let x = 0; x <= vars_present[0]; x++) {
         for (let y = 0; y <= vars_present[1]; y++) {
             for (let z = 0; z <= vars_present[2]; z++) {
@@ -209,7 +201,7 @@ function make_table(text) {
     }
 
     const table = document.createElement('table');
-    table.border = "1"; // simple border for clarity
+    table.border = "1";
 
     let i = 0
     for(let row of the_table) {
@@ -221,7 +213,7 @@ function make_table(text) {
             else       td = document.createElement('td');
 
             if (i == 0) {
-                const canvas = render_expression(cell, { x: cell_size_heuristic(cell), y: 24 }, 12);
+                const canvas = render_expression(cell, { x: cell_size_heuristic(cell), y: 24 }, 12, null, false);
                 td.appendChild(canvas);
             } else { td.textContent = cell; }
 

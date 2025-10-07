@@ -28,8 +28,9 @@ function find_overline_regions(expr) {
     return regions;
 }
 
-function render_expression(expression, canvas_size, font_size, canvas) {
+function render_expression(expression, canvas_size, font_size, canvas, draw_cursor) {
     expression = expression.replaceAll(" ", "")
+    console.log("the expr: ", expression)
     if(!canvas) {
         canvas = document.createElement('canvas');
         canvas.width  = canvas_size.x
@@ -39,9 +40,9 @@ function render_expression(expression, canvas_size, font_size, canvas) {
     const ctx = canvas.getContext('2d');
 
     font_size = font_size || 24;
-    const y = canvas_size.y - font_size - (font_size < 24 ? 3 : 10);
+    const y = canvas_size.y - font_size - (font_size < 24 ? 5 : 10);
     const spacing = 2;
-    ctx.font = `${font_size}pt monospace`;
+    ctx.font = `${font_size}pt Courier New`;
     ctx.textBaseline = 'top';
     ctx.fillStyle = 'white';
 
@@ -71,16 +72,18 @@ function render_expression(expression, canvas_size, font_size, canvas) {
         ctx.fillText(display_ch, x, y);
         char_positions.push(x);
 
-        if(i == expr_cursor - 1) {
-            ctx.fillStyle = '#ffffff22'
-            ctx.fillRect(x, y+2, text_size.width, -text_size.alphabeticBaseline);
-        }
-        if( negation_mode && 
-            i-1 >= Math.min(negation_begin, expr_cursor-1) && 
-            i   <= Math.max(negation_begin, expr_cursor-1)
-        ) {
-            ctx.fillStyle = '#00ff0033'
-            ctx.fillRect(x, y+2, text_size.width, -text_size.alphabeticBaseline);
+        if(draw_cursor) {
+            if(i == expr_cursor - 1) {
+                ctx.fillStyle = '#ffffff22'
+                ctx.fillRect(x, y+2, text_size.width, -text_size.alphabeticBaseline);
+            }
+            if( negation_mode && 
+                i-1 >= Math.min(negation_begin, expr_cursor-1) - (negation_begin < expr_cursor ? 2 : 0) && 
+                i   <= Math.max(negation_begin, expr_cursor-1) - (negation_begin < expr_cursor ? 1 : 0)
+            ) {
+                ctx.fillStyle = '#00ff0033'
+                ctx.fillRect(x, y+2, text_size.width, -text_size.alphabeticBaseline);
+            }
         }
 
         x += text_size.width + spacing;
@@ -107,10 +110,12 @@ function render_expression(expression, canvas_size, font_size, canvas) {
         const x2 = (char_positions[right] ?? x1) + ctx.measureText(display_right).width;
 
         console.log(expr_cursor, left, right)
-        if(left == expr_cursor || right == expr_cursor - 2) {
-            ctx.strokeStyle = "orange"
-        } else {
-            ctx.strokeStyle = "white"
+        if(draw_cursor) {
+            if(left == expr_cursor || right == expr_cursor - 2) {
+                ctx.strokeStyle = "orange"
+            } else {
+                ctx.strokeStyle = "white"
+            }
         }
 
         const overline_y = y - 2 - (5 * (max_level - 1)); 
@@ -130,6 +135,6 @@ function cell_size_heuristic(text) {
         if(is_any(r, ' ', '[', ']')) continue;
         count ++ 
     }
-    return count * 12
+    return count * 12 + 2
 }
 

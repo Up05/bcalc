@@ -2,7 +2,7 @@
 <html>
 <head>
 
-    <meta charset="UTF-8">
+    <meta charset="utf-8">
     <title> Loginė matematika </title>
     
     <style>
@@ -21,7 +21,7 @@
         }
         
         * {
-            font-family: Cambria;
+            font-family: system-ui;
             font-weight: 500;
             font-style: normal;
             text-shadow: -1px -1px 2px #1D2021FF;
@@ -56,6 +56,10 @@
         #the_symbol {
             filter: brightness(120%);
         }
+
+        .green {
+            background: #8AB309FF;
+        }
     
         canvas {
             width: min-content;
@@ -72,12 +76,12 @@
             padding-inline: 2px;
             margin: 0;
             border: none;
-            border-right: 1px solid yellow;
-            border-left: 1px solid yellow;
+            border-right: 2px solid #EBDBB2FF;
+            border-left: 2px solid #EBDBB2FF;
             text-align: center;
         }
         th {
-            border-bottom: 1px solid yellow;
+            border-bottom: 2px solid #EBDBB2FF;
         }
 
         button, p {
@@ -119,6 +123,8 @@
 </head>
 <body>
 
+    <p> Įvesties ekranas: </p>
+
     <script>
         let main_canvas = render_expression("", { x: 600, y: 50 }, 24)
         document.body.appendChild(main_canvas)
@@ -137,7 +143,7 @@
         <button>1</button>
         <button>(</button>
         <button>)</button>
-        <button>‾</button>
+        <button id="not-button">‾</button>
         <button>&amp;</button>
         <button>∨</button>
         <button>⊕</button>
@@ -148,7 +154,20 @@
     </div>
 
     <script src=main.js defer></script>
+    <p> Visos įmanomos funkcijos reikšmės: </p>
+    <div id=table>
 
+    </div>
+
+    <p> Funkcijai dualios funkcijos reikšmės: </p>
+    <div id=mono>
+
+    </div>
+    
+    <p> Ar funkcija yra monotoniška: </p>
+    <div id=mono>
+
+    </div>
 
 </body>
 </html>
